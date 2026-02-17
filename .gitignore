@@ -1,0 +1,24 @@
+# Go binaries
+*.exe
+*.exe~
+*.out
+
+# Test binary, build cache, and coverage files
+*.test
+*.cov
+
+# Dependency directories (may be empty)
+vendor/ 
+Gopkg.toml
+Gopkg.lock
+
+# Go workspace file
+go.work
+
+# Go module files
+go.mod
+go.sum
+
+# IDE files
+.idea/ 
+*.vscode/
