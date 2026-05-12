@@ -164,7 +164,7 @@ export default function InfraGraph() {
       nodeGroup.attr('transform', (d) => `translate(${d.x},${d.y})`);
     });
 
-    return () => sim.stop();
+    return () => { sim.stop(); };
   }, [data]);
 
   return (

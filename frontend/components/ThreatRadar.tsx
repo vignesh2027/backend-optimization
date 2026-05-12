@@ -78,7 +78,7 @@ export default function ThreatRadar({ data }: Props) {
     const avgScore = Object.values(data).reduce((a, b) => a + b, 0) / N;
     const fillColor = avgScore > 60 ? '#ff2d55' : avgScore > 30 ? '#ff9500' : '#39ff14';
 
-    const lineGen = d3.line<[number, number]>().x((d) => d[0]).y((d) => d[1]).curve(d3.cursorLinear);
+    const lineGen = d3.line<[number, number]>().x((d) => d[0]).y((d) => d[1]).curve(d3.curveLinearClosed);
 
     g.append('path')
       .datum([...points, points[0]])
