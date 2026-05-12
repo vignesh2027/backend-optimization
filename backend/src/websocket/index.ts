@@ -36,8 +36,8 @@ export function initWebSocket(httpServer: HttpServer) {
     } catch {}
   });
 
-  // Mock data emitters for development
-  if (process.env.NODE_ENV !== 'production') {
+  // Always emit mock data for demo (disable by setting DISABLE_MOCK_DATA=true)
+  if (process.env.DISABLE_MOCK_DATA !== 'true') {
     setInterval(() => {
       io.emit('attack-globe', generateMockAttack());
     }, 2000);
