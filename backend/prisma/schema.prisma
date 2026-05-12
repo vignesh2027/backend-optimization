@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ScanResult {
+  id          String   @id @default(uuid())
+  type        ScanType
+  target      String
+  verdict     Verdict
+  score       Float    @default(0)
+  engineCount Int      @default(0)
+  positives   Int      @default(0)
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@map("scan_results")
+}
+
+model Incident {
+  id               String          @id @default(uuid())
+  title            String
+  severity         Severity
+  status           IncidentStatus  @default(DETECTED)
+  attackType       AttackType
+  sourceIps        String[]
+  affectedSystems  String[]
+  timelineEvents   Json            @default("[]")
+  summary          String?
+  evidence         Json?
+  detectedAt       DateTime        @default(now())
+  investigatedAt   DateTime?
+  containedAt      DateTime?
+  resolvedAt       DateTime?
+  updatedAt        DateTime        @updatedAt
+
+  @@map("incidents")
+}
+
+model RequestLog {
+  id           String   @id @default(uuid())
+  ip           String
+  endpoint     String
+  method       String
+  statusCode   Int?
+  responseTime Int?
+  timestamp    DateTime @default(now())
+  flagged      Boolean  @default(false)
+  flagReason   String?
+
+  @@index([ip, timestamp])
+  @@map("request_logs")
+}
+
+model BlockedIp {
+  id        String   @id @default(uuid())
+  ip        String   @unique
+  reason    String
+  country   String?
+  isp       String?
+  score     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("blocked_ips")
+}
+
+enum ScanType {
+  FILE
+  URL
+  HASH
+}
+
+enum Verdict {
+  CLEAN
+  SUSPICIOUS
+  MALICIOUS
+  CRITICAL
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IncidentStatus {
+  DETECTED
+  INVESTIGATING
+  CONTAINED
+  RESOLVED
+}
+
+enum AttackType {
+  DDOS
+  RANSOMWARE
+  PHISHING
+  BRUTE_FORCE
+  DATA_EXFILTRATION
+  INSIDER_THREAT
+  MALWARE
+  PORT_SCAN
+  API_FLOOD
+}
